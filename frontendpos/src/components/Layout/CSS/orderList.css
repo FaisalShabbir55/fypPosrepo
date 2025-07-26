@@ -1,0 +1,264 @@
+/* CSS/orderlist.css */
+.main {
+  display: flex;
+  width: 100%;
+}
+
+.main-content {
+  flex-grow: 1;
+  margin-left: 20%; /* Offsets the sidebar width */
+  padding: 20px;
+  box-sizing: border-box;
+  width: 80%;
+}
+
+.order-history-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.order-history-container h2 {
+  color: #1f2937; /* Matches sidebar dark theme */
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.search-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.order-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-history-table th,
+.order-history-table td {
+  padding: 12px;
+  text-align: center; /* Center-align for action buttons */
+  border-bottom: 1px solid #ddd;
+}
+
+.order-history-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.order-history-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  width: 80px; /* Fixed width for consistency */
+}
+
+.action-btn.print {
+  background-color: #2196F3; /* Blue for Print */
+  color: white;
+}
+
+.action-btn.print:hover {
+  background-color: #1976D2;
+}
+
+.action-btn.edit {
+  background-color: #4CAF50; /* Green for Edit */
+  color: white;
+}
+
+.action-btn.edit:hover {
+  background-color: #388E3C;
+}
+
+.action-btn.delete {
+  background-color: #f44336; /* Red for Delete */
+  color: white;
+}
+
+.action-btn.delete:hover {
+  background-color: #D32F2F;
+}
+
+/* Ensure action columns have enough space */
+.order-history-table th:nth-child(n+8),
+.order-history-table td:nth-child(n+8) {
+  width: 100px; /* Adjust based on button width */
+}
+
+/* Export Controls Styles */
+.export-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.export-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  color: white;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+.export-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.copy-btn {
+  background: linear-gradient(135deg, #6c757d, #5a6268);
+}
+
+.copy-btn:hover {
+  background: linear-gradient(135deg, #5a6268, #495057);
+}
+
+.csv-btn {
+  background: linear-gradient(135deg, #28a745, #218838);
+}
+
+.csv-btn:hover {
+  background: linear-gradient(135deg, #218838, #1e7e34);
+}
+
+.excel-btn {
+  background: linear-gradient(135deg, #17a2b8, #138496);
+}
+
+.excel-btn:hover {
+  background: linear-gradient(135deg, #138496, #117a8b);
+}
+
+.pdf-btn {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+}
+
+.pdf-btn:hover {
+  background: linear-gradient(135deg, #c82333, #bd2130);
+}
+
+.print-btn {
+  background: linear-gradient(135deg, #6f42c1, #6610f2);
+}
+
+.print-btn:hover {
+  background: linear-gradient(135deg, #6610f2, #5a0fc8);
+}
+
+.column-controls {
+  position: relative;
+}
+
+.column-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.column-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.column-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  min-width: 200px;
+  margin-top: 5px;
+}
+
+.column-menu-header {
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  font-weight: 600;
+  color: #495057;
+  border-radius: 6px 6px 0 0;
+}
+
+.column-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.column-item:hover {
+  background-color: #f8f9fa;
+}
+
+.column-item input[type="checkbox"] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.column-item span {
+  font-size: 14px;
+  color: #495057;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .export-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
+  .export-buttons {
+    justify-content: center;
+  }
+  
+  .column-controls {
+    align-self: center;
+  }
+  
+  .column-menu {
+    right: auto;
+    left: 0;
+  }
+}

@@ -1,0 +1,102 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.main {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+}
+
+.sidebar {
+  width: 20%; /* Sidebar width */
+  background-color: #2c3e50;
+  padding: 20px;
+  color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.productside {
+  width: 80%; /* Adjusted width for main content */
+  padding: 20px;
+  background-color: #ecf0f1;
+  overflow-y: auto;
+}
+
+.products-list {
+  width: 100%;
+  max-width: 1100px; /* Adjust width to fit content */
+  margin: auto;
+  overflow-x: auto;
+}
+
+.products-list h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #34495e;
+}
+
+.products-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: fixed; 
+}
+
+.products-list th, 
+.products-list td {
+  border: 1px solid #bdc3c7;
+  text-align: center; /* Center content */
+  /* padding: 8px; */
+  white-space: nowrap; /* Prevents breaking */
+}
+
+.products-list th {
+  background-color: #34495e;
+  color: white;
+}
+
+.products-list td {
+  background-color: white;
+}
+
+.products-list button {
+  padding: 5px 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  display: block; /* Ensures button stays inside */
+  margin: auto; /* Centers button in the cell */
+  width: 80px; /* Adjust width to prevent overflow */
+}
+
+.products-list button:hover {
+  background-color: #2980b9;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .main {
+      flex-direction: column;
+  }
+  .sidebar {
+      width: 100%;
+      text-align: center;
+  }
+  .productside {
+      width: 60%;
+  }
+  .products-list table {
+      font-size: 12px; /* Smaller font for mobile */
+  }
+  .products-list th, 
+  .products-list td {
+      padding: 5px;
+  }
+  .products-list button {
+      width: 100%; /* Full width button on smaller screens */
+  }
+}

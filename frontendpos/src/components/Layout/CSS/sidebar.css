@@ -1,0 +1,74 @@
+.sidebar {
+  width: 20%;
+  height: 100vh;
+  background-color: #1f2937; /* dark gray */
+  color: white;
+  padding-top: 20px;
+  border: 1px;
+  /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); */
+}
+
+.sidebar-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  border: 1px;
+
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px;
+  border-width: 30px;
+  border: 1px;
+}
+
+.sidebar-list li {
+  /* padding: 12px 20px; */
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+
+
+
+/* background-color: #C2FBD7; */
+border-radius: 10px;
+border-width: 100px;
+/* box-shadow: rgba(25, 25, 25, 0.04) 0 0 1px 0, rgba(0, 0, 0, 0.1) 0 3px 4px 0; */
+color: #daedda;
+cursor: pointer;
+/* display: inline-block; */
+
+height: 30px;
+padding: 15px 10px 5px 5px ;
+transition: all 200ms;
+
+/* :hover
+background-color: #AFE6C3;
+transform: scale(1.05); */
+}
+
+.sidebar-list li:hover {
+  background-color: #3274df;
+  transform: scale(1.05); 
+   /* slightly lighter gray */
+}
+
+.sidebar-list li:active {
+  background-color: #4b5563; /* even lighter gray */
+}
+
+/* Logout button specific styling */
+.logout-item {
+  margin-top: 20px;
+  border-top: 1px solid #374151;
+  padding-top: 15px !important;
+  color: #f87171 !important; /* red color for logout */
+}
+
+.logout-item:hover {
+  background-color: #dc2626 !important; /* red background on hover */
+  color: white !important;
+}

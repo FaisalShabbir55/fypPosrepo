@@ -1,0 +1,266 @@
+/* .order-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  background-color: #f1c40f;
+  color: #000;
+  padding: 10px;
+  margin: -20px -20px 20px -20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group.full-width {
+  flex: 100%;
+}
+
+.product-table {
+  margin-bottom: 10px;
+}
+
+.product-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-table th,
+.product-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.product-table th {
+  background-color: #f5f5f5;
+}
+
+.product-table td input {
+  width: 100%;
+  padding: 5px;
+}
+
+.product-table button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.totals .form-group {
+  flex: 1;
+}
+
+button[type="submit"] {
+  background-color: #1abc9c;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.suggestions {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.suggestions li {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background-color: #f0f0f0;
+} */
+
+
+
+/* CSS/orderform.css */
+.main {
+  display: flex;
+  width: 100%;
+}
+
+.order-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 100%;
+  margin: 0 auto;
+  color: #333;
+  box-sizing: border-box;
+  width: 100%; /* Ensure it fills the available space */
+}
+
+h2 {
+  background-color: #f1c40f;
+  color: #000;
+  padding: 10px;
+  margin: 0 0 20px 0; /* Removed negative margins to avoid overlap */
+  font-size: 24px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  max-width: 250px;
+  box-sizing: border-box;
+}
+
+.form-group.full-width {
+  flex: 100%;
+}
+
+.form-group.full-width input {
+  width: 100%;
+  max-width: 500px;
+}
+
+.product-table {
+  margin-bottom: 15px;
+}
+
+.product-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.product-table th,
+.product-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.product-table th {
+  background-color: #f5f5f5;
+  white-space: nowrap;
+}
+
+.product-table td input {
+  width: 80px;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.product-table button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.totals .form-group {
+  flex: 1;
+}
+
+.totals .form-group input {
+  width: 150px;
+}
+
+button[type="submit"] {
+  background-color: #1abc9c;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.suggestions {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 10;
+  width: 200px;
+  font-size: 14px;
+}
+
+.suggestions li {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background-color: #f0f0f0;
+}
+
+/* Payment Method Radio Button Spacing Fix */
+.payment-method {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.payment-method input[type="radio"] {
+  margin: 0 3px 0 0 !important;
+  padding: 0 !important;
+}
+
+.payment-method label {
+  margin: 0 15px 0 0 !important;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}

@@ -1,0 +1,381 @@
+/* Category.css */
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f3f4f6;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.category-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 300px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.blue-card h3,
+.green-card h3 {
+  background-color: #3b82f6;
+  color: white;
+  padding: 10px;
+  margin: -20px -20px 20px -20px;
+  text-align: center;
+  font-size: 18px;
+  border-radius: 8px 8px 0 0;
+}
+
+.green-card h3 {
+  background-color: #10b981;
+}
+
+.card label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.card input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.card .btn {
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.card .primary-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.card .primary-btn:hover {
+  background-color: #2563eb;
+}
+
+.card .delete-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.card .delete-btn:hover {
+  background-color: #dc2626;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+/* Export Controls Styles */
+.export-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.export-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  color: white;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+.export-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.copy-btn {
+  background: linear-gradient(135deg, #6c757d, #5a6268);
+}
+
+.copy-btn:hover {
+  background: linear-gradient(135deg, #5a6268, #495057);
+}
+
+.csv-btn {
+  background: linear-gradient(135deg, #28a745, #218838);
+}
+
+.csv-btn:hover {
+  background: linear-gradient(135deg, #218838, #1e7e34);
+}
+
+.excel-btn {
+  background: linear-gradient(135deg, #17a2b8, #138496);
+}
+
+.excel-btn:hover {
+  background: linear-gradient(135deg, #138496, #117a8b);
+}
+
+.pdf-btn {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+}
+
+.pdf-btn:hover {
+  background: linear-gradient(135deg, #c82333, #bd2130);
+}
+
+.print-btn {
+  background: linear-gradient(135deg, #6f42c1, #6610f2);
+}
+
+.print-btn:hover {
+  background: linear-gradient(135deg, #6610f2, #5a0fc8);
+}
+
+.column-controls {
+  position: relative;
+}
+
+.column-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.column-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.column-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  min-width: 200px;
+  margin-top: 5px;
+}
+
+.column-menu-header {
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  font-weight: 600;
+  color: #495057;
+  border-radius: 6px 6px 0 0;
+}
+
+.column-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.column-item:hover {
+  background-color: #f8f9fa;
+}
+
+.column-item input[type="checkbox"] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.column-item span {
+  font-size: 14px;
+  color: #495057;
+}
+
+.search-box input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.data-table th,
+.data-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.data-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination span {
+  font-size: 14px;
+  color: #666;
+}
+
+.pagination button {
+  background-color: #f1f1f1;
+  color: #333;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pagination button:hover {
+  background-color: #ddd;
+}
+
+.pagination button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+
+/* Export Controls and Column Visibility */
+.column-visibility-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dropdown-arrow {
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.column-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  min-width: 200px;
+  z-index: 1000;
+  margin-top: 4px;
+}
+
+.column-menu-header {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+  font-size: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.column-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+}
+
+.column-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #22c55e;
+}
+
+.column-label {
+  user-select: none;
+}
+
+.column-checkbox:hover {
+  background-color: #f9fafb;
+  border-radius: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .export-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
+  .export-buttons {
+    justify-content: center;
+  }
+  
+  .column-controls {
+    align-self: center;
+  }
+  
+  .column-menu {
+    right: auto;
+    left: 0;
+  }
+}
