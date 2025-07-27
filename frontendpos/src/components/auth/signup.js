@@ -1,77 +1,161 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Sidebar from '../Layout/sidebar.js';
 import './signup.css';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import emailjs from '@emailjs/browser';
 
 function Signup() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
-    const [submit, setSubmit] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
-    const handleName = (e) => {
-        setName(e.target.value);
+    // EmailJS configuration
+    const EMAILJS_SERVICE_ID = 'service_u96y7bx';
+    const EMAILJS_TEMPLATE_ID = 'template_z8w7ubc';
+    const EMAILJS_PUBLIC_KEY = 'sNp_8ujlFAPgxFptv';
+
+    const handleName = (e) => setName(e.target.value);
+    const handleEmail = (e) => setEmail(e.target.value);
+    const handlePassword = (e) => setPassword(e.target.value);
+    const handleConfirmPassword = (e) => setConfirmPassword(e.target.value);
+
+    const validateEmail = (email) => {
+        if (!email) return 'Email is required';
+        const valid = String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+        return valid ? '' : 'Email is invalid';
     };
 
-    const handleEmail = (e) => {
-        setEmail(e.target.value);
+    const validatePassword = (password) => {
+        if (!password) return 'Password is required';
+        if (password.length < 6) return 'Password must be at least 6 characters';
+        return '';
     };
 
-    const handlePassword = (e) => {
-        setPassword(e.target.value);
-    };
+    // Function to send welcome email
+    const sendWelcomeEmail = async (userEmail, userName) => {
+        try {
+            const templateParams = {
+                to_email: userEmail,
+                to_name: userName,
+                from_name: 'POS System',
+                message: `Welcome to our POS System! Your account has been successfully created.`,
+                signup_time: new Date().toLocaleString(),
+                account_details: 'Your account is now active and ready to use.',
+                next_steps: 'You can now log in and start using all the features of our POS system.',
+                subject: 'Welcome to POS System - Account Created Successfully'
+            };
 
-    const handleRole = (e) => {
-        setRole(e.target.value);
+            const result = await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                templateParams,
+                EMAILJS_PUBLIC_KEY
+            );
+
+            console.log('Welcome email sent successfully:', result);
+            return true;
+        } catch (error) {
+            console.error('Failed to send welcome email:', error);
+            return false;
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+        setError(''); // Clear previous errors
 
-        if (!name || !email || !password || !role) {
-            setError('Please fill in all fields.');
+        // Validate inputs
+        const emailError = validateEmail(email);
+        const passwordError = validatePassword(password);
+
+        if (!name || !email || !password || !confirmPassword) {
+            setError('All fields are required');
+            setIsLoading(false);
+            return;
+        }
+        
+        if (emailError) {
+            setError(emailError);
+            setIsLoading(false);
+            return;
+        }
+        
+        if (passwordError) {
+            setError(passwordError);
+            setIsLoading(false);
+            return;
+        }
+        
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            setIsLoading(false);
             return;
         }
 
         try {
-            const response = await fetch('https://your-api-endpoint.com/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, password, role }),
+            const response = await axios.post('http://localhost:3001/api/auth/signup', {
+                name,
+                email,
+                password
             });
 
-            if (response.ok) {
-                setSubmit(true);
-                setError('');
+            if (response.data.success) {
+                // Send welcome email
+                const emailSent = await sendWelcomeEmail(email, name);
+                
+                // Show success message
+                if (emailSent) {
+                    alert(`🎉 Account created successfully!\n\n📧 A welcome email has been sent to: ${email}\n\nRedirecting to login...`);
+                } else {
+                    alert(`🎉 Account created successfully!\n\n⚠️ Note: Welcome email could not be sent, but your account was created successfully.\n\nRedirecting to login...`);
+                }
+                
+                // Reset form
                 setName('');
                 setEmail('');
                 setPassword('');
-                setRole('');
-                setTimeout(() => {
-                    setSubmit(false);
-                }, 3000);
+                setConfirmPassword('');
+                
+                // Redirect to login page
+                navigate('/login');
             } else {
-                const data = await response.json();
-                setError(data.message || 'Signup failed');
+                setError(response.data.message || 'Signup failed');
             }
         } catch (err) {
-            setError('An error occurred during signup.');
+            console.error('Signup error:', err);
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message);
+            } else if (err.response && err.response.status === 400) {
+                setError('Invalid input data. Please check your information.');
+            } else if (err.response && err.response.status === 409) {
+                setError('Email already exists. Please use a different email.');
+            } else if (err.code === 'NETWORK_ERROR' || err.message === 'Network Error') {
+                setError('Network error. Please check your connection and try again.');
+            } else {
+                setError('Error occurred during signup. Please try again.');
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className='main' style={{
+        <div className='signup-container' style={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             minHeight: '100vh',
             padding: '20px'
         }}>
-            <Sidebar />
             <div className='form-container' style={{
                 maxWidth: '500px',
                 width: '100%',
@@ -81,63 +165,79 @@ function Signup() {
                 justifyContent: 'center'
             }}>
                 <div className='header'>
-                    <h1>Registration</h1>
+                    <h1>Sign Up</h1>
                     <div className='auth-links'>
                         <Link to="/login" className='logout-link'>LOGIN</Link>
                         <span className='separator'>/</span>
-                        <span className='dashboard-text'>Admin Dashboard</span>
+                        <span className='dashboard-text'>Admin Portal</span>
                     </div>
                 </div>
                 <div className='form-section'>
-                    <h3>Enter new User Info</h3>
+                    <h3>Create your account</h3>
                                     
                     {error && <div className='error-message'>{error}</div>}
-                    {submit && <div className='success-message'>Signup successful!</div>}
-                    <div className='form-group'>
-                        <label htmlFor='name'>Name</label>
-                        <input 
-                            id='name'
-                            type='text' 
-                            placeholder='Enter User Name' 
-                            onChange={handleName} 
-                            value={name} 
-                        />
-                    </div>
-                    <div className='form-group'>
-                        <label htmlFor='email'>Email</label>
-                        <input 
-                            id='email'
-                            type='email' 
-                            placeholder='Enter Email' 
-                            onChange={handleEmail} 
-                            value={email} 
-                        />
-                    </div>
-                    <div className='form-group'>
-                        <label htmlFor='password'>Password</label>
-                        <input 
-                            id='password'
-                            type='password' 
-                            placeholder='Enter Password' 
-                            onChange={handlePassword} 
-                            value={password} 
-                        />
-                    </div>
-                    <div className='form-group'>
-                        <label htmlFor='role'>Role</label>
-                        <select 
-                            id='role'
-                            onChange={handleRole} 
-                            value={role}
-                            className='role-select'
+                    <form onSubmit={handleSubmit}>
+                        <div className='form-group'>
+                            <label htmlFor='name'>Full Name</label>
+                            <input 
+                                id='name'
+                                type='text' 
+                                placeholder='Enter Full Name' 
+                                onChange={handleName} 
+                                value={name}
+                                required
+                                disabled={isLoading}
+                            />
+                        </div>
+                        <div className='form-group'>
+                            <label htmlFor='email'>Email</label>
+                            <input 
+                                id='email'
+                                type='email' 
+                                placeholder='Enter Email' 
+                                onChange={handleEmail} 
+                                value={email}
+                                required
+                                disabled={isLoading}
+                            />
+                        </div>
+                        <div className='form-group'>
+                            <label htmlFor='password'>Password</label>
+                            <input 
+                                id='password'
+                                type='password' 
+                                placeholder='Enter Password (min 6 characters)' 
+                                onChange={handlePassword} 
+                                value={password}
+                                required
+                                disabled={isLoading}
+                            />
+                        </div>
+                        <div className='form-group'>
+                            <label htmlFor='confirmPassword'>Confirm Password</label>
+                            <input 
+                                id='confirmPassword'
+                                type='password' 
+                                placeholder='Confirm Password' 
+                                onChange={handleConfirmPassword} 
+                                value={confirmPassword}
+                                required
+                                disabled={isLoading}
+                            />
+                        </div>
+
+                        <button 
+                            type='submit' 
+                            className='save-btn'
+                            disabled={isLoading}
                         >
-                            <option value="">Select Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="manager">Manager</option>
-                            <option value="employee">Employee</option>
-                        </select>
+                            {isLoading ? 'Creating Account...' : 'Create Account'}
+                        </button>
+                    </form>
+
+                    <div className='auth-footer'>
+                        <p>Already have an account? <Link to="/login">Login here</Link></p>
                     </div>
-                    <button onClick={handleSubmit} type='submit' className='save-btn'>Save</button>
                 </div>
             </div>
         </div>

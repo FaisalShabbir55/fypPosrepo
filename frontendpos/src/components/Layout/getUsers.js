@@ -54,19 +54,37 @@ export default function Users() {
     setCurrentPage(1); // Reset to first page after search
   }, [searchTerm, users]);
 
-  const deleteUser = (email) => {
-    axios.delete(`http://localhost:3001/api/auth/staff/${email}`)
+  const deleteUser = (userId, userName) => {
+    // Check if current user has permission
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+    if (currentUser.role !== 'Admin' && currentUser.role !== 'Manager') {
+      alert('Access denied. Only Admins and Managers can delete staff members.');
+      return;
+    }
+
+    if (window.confirm(`Are you sure you want to delete ${userName}?`)) {
+      const token = localStorage.getItem('token');
+      
+      axios.delete(`http://localhost:3001/api/auth/staff/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then((response) => {
-        if (response.data.success) {
-          setUsers(prev => prev.filter(user => user.email !== email));
+        if (response.data.success !== false) {
+          // Refresh the user list
+          fetchUsers();
+          alert('Staff member deleted successfully');
         } else {
           alert(response.data.message || 'Failed to delete user');
         }
       })
       .catch((err) => {
         console.error(err);
-        alert('Failed to delete user');
+        const errorMessage = err.response?.data?.message || 'Failed to delete user';
+        alert(errorMessage);
       });
+    }
   };
 
   // Pagination logic
@@ -85,6 +103,20 @@ export default function Users() {
       <div className="main-content">
         <div className="users-container">
           <h2>All Staff Users</h2>
+          
+          {/* Role indicator */}
+          {JSON.parse(localStorage.getItem('user') || '{}').role === 'Employee' && (
+            <div style={{ 
+              background: '#fff3cd', 
+              border: '1px solid #ffeaa7', 
+              color: '#856404', 
+              padding: '10px', 
+              borderRadius: '5px', 
+              marginBottom: '20px' 
+            }}>
+              <strong>Note:</strong> You are logged in as an Employee. Only Admins and Managers can delete staff members.
+            </div>
+          )}
           
           {/* Search Section */}
           <div className="search-section">
@@ -123,8 +155,10 @@ export default function Users() {
                     <td>{user.Role}</td>
                     <td>
                       <button
-                        onClick={() => deleteUser(user.Email)}
+                        onClick={() => deleteUser(user.Id, user.Name)}
                         className="action-btn delete"
+                        disabled={JSON.parse(localStorage.getItem('user') || '{}').role === 'Employee'}
+                        title={JSON.parse(localStorage.getItem('user') || '{}').role === 'Employee' ? 'Only Admins and Managers can delete staff' : 'Delete staff member'}
                       >
                         Delete
                       </button>

@@ -22,6 +22,15 @@ export default function Sidebar() {
     { path: '/users', label: 'Staff Data', icon: '👨‍💼' },
     { path: '/category', label: 'Add New Category', icon: '📂' },
     { path: '/create-order', label: 'Create New Order', icon: '🛒' },
+    {
+      path:'/low-stock',label:"Check Stocks",icon:"🛒"
+    },
+    {
+      path:'/trends',label:"Trending Products",icon:"💹"
+    },
+    {
+      path:'/powerBi',label:"Power BI Dashboard",icon:"📊"
+    },
   ];
 
   const handleNavigation = (path) => {

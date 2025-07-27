@@ -47,7 +47,7 @@
 .auth-links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .logout-link {
@@ -73,7 +73,7 @@
 }
 
 .dashboard-text {
-  color: #64748b;
+  color: #666;
   font-size: 14px;
   font-weight: 500;
 }
@@ -241,7 +241,7 @@
 .search-container {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .search-container label {
@@ -478,7 +478,7 @@
   .main-content {
     margin-left: 0;
   }
-  
+
   .table-controls {
     flex-direction: column;
     align-items: stretch;
@@ -488,8 +488,9 @@
   .export-controls {
     justify-content: center;
   }
-  
-  .search-container {
+
+  .export-buttons,
+  .column-controls {
     justify-content: center;
   }
   
