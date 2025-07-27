@@ -1,73 +1,122 @@
-/* CSS/addproduct.css */
+/* Modern Add Product Page */
 .main {
   display: flex;
   width: 100%;
   min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Poppins', sans-serif;
 }
 
 .mainform {
-  background-color: #f8f9fa;
-  padding: 20px;
+  background-color: #f8fafc;
+  padding: 0;
   flex-grow: 1;
-  margin-left: 20%; /* Reduced to increase content width */
+  margin-left: 280px;
   box-sizing: border-box;
-  width: 100%; /* Increased to take more space */
+  width: calc(100% - 280px);
   min-height: 100vh;
   overflow-y: auto;
+  transition: all 0.3s ease;
 }
 
+/* Modern Header */
 .header-section {
-  margin-bottom: 30px;
+  padding: 30px 40px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .green-bar {
   width: 100%;
-  height: 8px;
-  background-color: #28a745;
-  margin-bottom: 20px;
-  border-radius: 4px;
+  height: 4px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  margin-bottom: 25px;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
 .mainform h2 {
-  font-size: 28px;
-  font-weight: 600;
-  color: #333;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e293b;
   margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .message {
-  background-color: #d4edda;
-  color: #155724;
-  padding: 12px;
-  border-radius: 4px;
-  border: 1px solid #c3e6cb;
-  margin-bottom: 20px;
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #065f46;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border-left: 4px solid #10b981;
+  margin: 20px 40px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+  animation: slideInDown 0.5s ease;
 }
 
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modern Form Sections */
 .form-section {
-  background-color: #ffffff;
-  padding: 25px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 800px; /* Add this line to control width */
-  margin-left: 50px; /* Center the sections */
-  margin-right: auto; /* Center the sections */
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  padding: 35px;
+  margin: 25px 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .section-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #e9ecef;
+  color: #1e293b;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f1f5f9;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .form-row {
   display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 25px;
+  margin-bottom: 25px;
+  align-items: flex-end;
 }
 
 .form-row.single {
@@ -86,88 +135,295 @@
 
 .form-group label {
   font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
-  font-size: 14px;
+  color: #374151;
+  margin-bottom: 10px;
+  font-size: 15px;
+  letter-spacing: 0.025em;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-  padding: 12px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  padding: 14px 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
   background-color: #fff;
+  font-weight: 400;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: #80bdff;
+  border-color: #667eea;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  transform: translateY(-1px);
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: #6c757d;
+  color: #9ca3af;
+  font-weight: 400;
 }
 
 .form-group input[readonly] {
-  background-color: #e9ecef;
-  opacity: 1;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  color: #64748b;
+  font-weight: 500;
+  cursor: not-allowed;
 }
 
 .form-group select {
   cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 18px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 50px;
 }
 
 .form-group textarea {
   resize: vertical;
-  min-height: 100px;
-  font-family: inherit;
+  min-height: 120px;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
 }
 
+/* Modern Submit Button */
 .submit-btn {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 12px 30px;
+  padding: 16px 40px;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
+  font-family: 'Poppins', sans-serif;
   cursor: pointer;
-  transition: background-color 0.15s ease-in-out;
-  margin-top: 20px;
-  margin-left: 50px; /* Move button to align with form sections */
-  display: block; /* Ensure it's a block element */
+  transition: all 0.3s ease;
+  margin: 30px 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .submit-btn:hover {
-  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
 }
 
 .submit-btn:focus {
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.3);
+}
+
+/* Loading state for submit button */
+.submit-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+.submit-btn.loading {
+  position: relative;
+  color: transparent;
+}
+
+.submit-btn.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .mainform {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
+  .header-section {
+    padding: 20px 25px;
+  }
+  
+  .mainform h2 {
+    font-size: 28px;
+  }
+  
+  .form-section {
+    padding: 25px;
+    margin: 20px 25px;
+  }
+  
+  .section-title {
+    font-size: 20px;
+  }
+  
   .form-row {
     flex-direction: column;
     gap: 0;
   }
   
-  .form-section {
-    padding: 15px;
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 12px 16px;
+    font-size: 16px;
   }
   
-  .mainform {
-    padding: 15px;
-    margin-left: 0; /* Remove margin on small screens */
-    width: 100%; /* Full width on small screens */
+  .submit-btn {
+    margin: 25px 25px;
+    padding: 16px 30px;
+    width: calc(100% - 50px);
+    justify-content: center;
   }
+  
+  .message {
+    margin: 15px 25px;
+    padding: 14px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-section {
+    padding: 15px 20px;
+  }
+  
+  .mainform h2 {
+    font-size: 24px;
+  }
+  
+  .form-section {
+    padding: 20px;
+    margin: 15px 20px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+  }
+  
+  .form-group label {
+    font-size: 14px;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+  
+  .submit-btn {
+    margin: 20px 20px;
+    padding: 14px 24px;
+    font-size: 15px;
+    width: calc(100% - 40px);
+  }
+}
+
+/* Form Animation */
+.form-section {
+  animation: slideInUp 0.6s ease forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.form-section:nth-child(1) { animation-delay: 0.1s; }
+.form-section:nth-child(2) { animation-delay: 0.2s; }
+.form-section:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes slideInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Success animation */
+.message.success {
+  animation: bounceIn 0.8s ease;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Improved focus states */
+.form-group input:focus + label,
+.form-group select:focus + label,
+.form-group textarea:focus + label {
+  color: #667eea;
+}
+
+/* Modern validation states */
+.form-group.error input,
+.form-group.error select,
+.form-group.error textarea {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.form-group.success input,
+.form-group.success select,
+.form-group.success textarea {
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.error-text {
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+.success-text {
+  color: #10b981;
+  font-size: 13px;
+  margin-top: 5px;
+  font-weight: 500;
 }
