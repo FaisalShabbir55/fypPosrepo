@@ -1,8 +1,21 @@
 import { poolPromise, sql } from '../Database.js';
 import bcrypt from 'bcrypt';
-
 import jwt from 'jsonwebtoken';
+import { createRequire } from 'module';
 import { findUserByEmail } from '../Models/slModel.js'; // adjust path if needed
+
+// Use createRequire to import nodemailer properly
+const require = createRequire(import.meta.url);
+const nodemailer = require('nodemailer');
+
+// Email configuration
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER || 'your-email@gmail.com',
+    pass: process.env.EMAIL_PASS || 'your-app-password'
+  }
+});
 
 // login Api
 
@@ -55,6 +68,54 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET || 'your_secret_key',
       { expiresIn: '24h' }
     );
+
+    // Send login notification email
+    try {
+      const currentDate = new Date().toLocaleString();
+      const mailOptions = {
+        from: process.env.EMAIL_USER || 'your-email@gmail.com',
+        to: email,
+        subject: 'Login Notification - POS System',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+            <h2 style="color: #22c55e; text-align: center;">🔐 Login Notification</h2>
+            <p>Hello <strong>${user.Name}</strong>,</p>
+            <p>We noticed that you just logged into your POS System account.</p>
+            
+            <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+              <h3 style="margin-top: 0; color: #333;">Login Details:</h3>
+              <ul style="list-style: none; padding: 0;">
+                <li><strong>📧 Email:</strong> ${email}</li>
+                <li><strong>👤 Role:</strong> ${user.Role}</li>
+                <li><strong>🕒 Time:</strong> ${currentDate}</li>
+                <li><strong>🌐 Browser:</strong> Web Application</li>
+              </ul>
+            </div>
+            
+            <p>If this was not you, please contact your system administrator immediately.</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <p style="color: #666; font-size: 14px;">
+                This is an automated security notification from your POS System.
+              </p>
+            </div>
+            
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+            <p style="text-align: center; color: #999; font-size: 12px;">
+              © 2025 POS System | Secure Business Management
+            </p>
+          </div>
+        `
+      };
+
+      if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+        await transporter.sendMail(mailOptions);
+        console.log('Login notification email sent to:', email);
+      }
+    } catch (emailError) {
+      console.error('Error sending login notification email:', emailError);
+      // Don't fail login if email fails
+    }
 
     res.status(200).json({
       success: true,

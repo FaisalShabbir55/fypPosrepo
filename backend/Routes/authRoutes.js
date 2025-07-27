@@ -6,6 +6,9 @@ import { getSuppliers, updateSupplier, deleteSupplier } from '../Controller/Supp
 import { getAllStaff, deleteStaff } from '../Controller/manageStaff.js';
 import { addCategory , getCategories, deleteCategory,searchCategory} from '../Controller/category.js';
 import { createOrder, getOrders, searchOrders, deleteOrder, editOrder, getOrderDetails, updateOrder } from '../Controller/orderForm.js';
+
+import { getLowStockProducts, getStockStatistics } from '../Controller/checkStock.js'; 
+import { getTrendingProducts } from '../Controller/trendingProducts.js'; 
 // ProductRoutes
 
 
@@ -51,6 +54,27 @@ router.delete('/delete-order/:id', deleteOrder);
 router.put('/edit-order/:id', editOrder);
 router.get('/order-details/:id',getOrderDetails)
 router.put('/update-order/:id', updateOrder)
+
+
+
+
+//stock routes
+
+
+router.get('/low-stock', getLowStockProducts);
+router.get('/stock-statistics', getStockStatistics);
+
+
+
+
+
+// trending  Products API's Here  
+
+
+router.get('/trending-products', getTrendingProducts);
+
+
+
 
 
 

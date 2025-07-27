@@ -1,33 +1,111 @@
-/* CSS/app.css */
+/* Modern App Container */
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.App {
+  min-height: 100vh;
+  background-color: #f8fafc;
 }
 
 .app-container {
   display: flex;
   min-height: 100vh;
   width: 100%;
-}
-
-.sidebar {
-  width: 20%; /* Matches your sidebar width */
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  background-color: #1f2937;
-  color: white;
-  padding-top: 20px;
-  box-sizing: border-box;
-  z-index: 1000;
+  background-color: #f8fafc;
 }
 
 .main-content {
   flex-grow: 1;
-  margin-left: 20%; /* Matches sidebar width to remove left space */
-  padding: 20px;
+  margin-left: 280px;
+  padding: 0;
   box-sizing: border-box;
-  width: 80%; /* Ensure content takes remaining space */
+  width: calc(100% - 280px);
+  min-height: 100vh;
+  background-color: #f8fafc;
+  transition: all 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+/* Loading and Error States */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 18px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 18px;
+  color: #ef4444;
+  font-weight: 500;
+}
+
+/* Modern button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  gap: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  color: #8b5cf6;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+  color: #dc2626;
 }
