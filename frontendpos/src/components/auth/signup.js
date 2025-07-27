@@ -1,23 +1,27 @@
-
-
 import React, { useState } from 'react';
 import './signup.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Sidebar from '../Layout/sidebar.js';
+import emailjs from '@emailjs/browser';
 
 export default function Signup() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
-    const [submit, setSubmit] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+
+    // EmailJS configuration
+    const EMAILJS_SERVICE_ID = 'service_u96y7bx';
+    const EMAILJS_TEMPLATE_ID = 'template_z8w7ubc';
+    const EMAILJS_PUBLIC_KEY = 'sNp_8ujlFAPgxFptv';
 
     const handleName = (e) => setName(e.target.value);
     const handleEmail = (e) => setEmail(e.target.value);
     const handlePassword = (e) => setPassword(e.target.value);
-    const handleRole = (e) => setRole(e.target.value);
+    const handleConfirmPassword = (e) => setConfirmPassword(e.target.value);
 
     const validateEmail = (email) => {
         if (!email) return 'Email is required';
@@ -30,396 +34,179 @@ export default function Signup() {
     };
 
     const validatePassword = (password) => {
-        if (password.length < 8) return 'Password must be at least 8 characters';
-        if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) return 'Password must contain a special character';
+        if (!password) return 'Password is required';
+        if (password.length < 6) return 'Password must be at least 6 characters';
         return '';
     };
 
-    const handleSubmit = (e) => {
+    // Function to send welcome email
+    const sendWelcomeEmail = async (userEmail, userName) => {
+        try {
+            const templateParams = {
+                to_email: userEmail,
+                to_name: userName,
+                from_name: 'POS System',
+                message: `Welcome to our POS System! Your account has been successfully created.`,
+                signup_time: new Date().toLocaleString(),
+                account_details: 'Your account is now active and ready to use.',
+                next_steps: 'You can now log in and start using all the features of our POS system.',
+                subject: 'Welcome to POS System - Account Created Successfully'
+            };
+
+            const result = await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                templateParams,
+                EMAILJS_PUBLIC_KEY
+            );
+
+            console.log('Welcome email sent successfully:', result);
+            return true;
+        } catch (error) {
+            console.error('Failed to send welcome email:', error);
+            return false;
+        }
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         const emailError = validateEmail(email);
         const passwordError = validatePassword(password);
 
-        if (!name || !email || !password || !role) {
+        if (!name || !email || !password || !confirmPassword) {
             setError('All fields are required');
+            setIsLoading(false);
         } else if (emailError) {
             setError(emailError);
+            setIsLoading(false);
         } else if (passwordError) {
             setError(passwordError);
+            setIsLoading(false);
+        } else if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            setIsLoading(false);
         } else {
             setError('');
 
-            axios.post('http://localhost:3001/api/auth/signup', {
-                name,
-                email,
-                password,
-                role
-            })
-            .then((response) => {
+            try {
+                const response = await axios.post('http://localhost:3001/api/auth/signup', {
+                    name,
+                    email,
+                    password
+                });
+
                 if (response.data.success) {
-                    setSubmit(true);
+                    // Send welcome email
+                    const emailSent = await sendWelcomeEmail(email, name);
+                    
+                    // Show success message
+                    if (emailSent) {
+                        alert(`🎉 Account created successfully!\n\n📧 A welcome email has been sent to: ${email}\n\nRedirecting to login...`);
+                    } else {
+                        alert(`🎉 Account created successfully!\n\n⚠️ Note: Welcome email could not be sent, but your account was created successfully.\n\nRedirecting to login...`);
+                    }
+                    
+                    // Redirect to login page
+                    navigate('/login');
                 } else {
-                    setError(response.data.message);
+                    setError(response.data.message || 'Signup failed');
                 }
-            })
-            .catch((err) => {
+            } catch (err) {
                 console.error('Signup error:', err);
-                setError('Error occurred during signup');
-            });
+                if (err.response && err.response.data && err.response.data.message) {
+                    setError(err.response.data.message);
+                } else {
+                    setError('Error occurred during signup');
+                }
+            } finally {
+                setIsLoading(false);
+            }
         }
     };
 
     return (
-        <div className='main'>
-            <Sidebar />
+        <div className='signup-container'>
             <div className='form-container'>
                 <div className='header'>
-                    <h1>Registration</h1>
+                    <h1>Sign Up</h1>
                     <div className='auth-links'>
                         <Link to="/login" className='logout-link'>LOGIN</Link>
                         <span className='separator'>/</span>
-                        <span className='dashboard-text'>Admin Dashboard</span>
+                        <span className='dashboard-text'>Admin Portal</span>
                     </div>
                 </div>
 
                 <div className='form-section'>
-                    <h3>Enter new User Info</h3>
+                    <h3>Create your account</h3>
                     
                     {error && <div className='error-message'>{error}</div>}
-                    {submit && <div className='success-message'>Signup successful!</div>}
 
-                    <div className='form-group'>
-                        <label htmlFor='name'>Name</label>
-                        <input 
-                            id='name'
-                            type='text' 
-                            placeholder='Enter User Name' 
-                            onChange={handleName} 
-                            value={name} 
-                        />
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className='form-group'>
+                            <label htmlFor='name'>Full Name</label>
+                            <input 
+                                id='name'
+                                type='text' 
+                                placeholder='Enter Full Name' 
+                                onChange={handleName} 
+                                value={name}
+                                required
+                            />
+                        </div>
 
-                    <div className='form-group'>
-                        <label htmlFor='email'>Email</label>
-                        <input 
-                            id='email'
-                            type='email' 
-                            placeholder='Enter Email' 
-                            onChange={handleEmail} 
-                            value={email} 
-                        />
-                    </div>
+                        <div className='form-group'>
+                            <label htmlFor='email'>Email</label>
+                            <input 
+                                id='email'
+                                type='email' 
+                                placeholder='Enter Email' 
+                                onChange={handleEmail} 
+                                value={email}
+                                required
+                            />
+                        </div>
 
-                    <div className='form-group'>
-                        <label htmlFor='password'>Password</label>
-                        <input 
-                            id='password'
-                            type='password' 
-                            placeholder='Enter Password' 
-                            onChange={handlePassword} 
-                            value={password} 
-                        />
-                    </div>
+                        <div className='form-group'>
+                            <label htmlFor='password'>Password</label>
+                            <input 
+                                id='password'
+                                type='password' 
+                                placeholder='Enter Password (min 6 characters)' 
+                                onChange={handlePassword} 
+                                value={password}
+                                required
+                            />
+                        </div>
 
-                    <div className='form-group'>
-                        <label htmlFor='role'>Role</label>
-                        <select 
-                            id='role'
-                            onChange={handleRole} 
-                            value={role}
-                            className='role-select'
+                        <div className='form-group'>
+                            <label htmlFor='confirmPassword'>Confirm Password</label>
+                            <input 
+                                id='confirmPassword'
+                                type='password' 
+                                placeholder='Confirm Password' 
+                                onChange={handleConfirmPassword} 
+                                value={confirmPassword}
+                                required
+                            />
+                        </div>
+
+                        <button 
+                            type='submit' 
+                            className='save-btn'
+                            disabled={isLoading}
                         >
-                            <option value="">Select Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="manager">Manager</option>
-                            <option value="employee">Employee</option>
-                        </select>
-                    </div>
+                            {isLoading ? 'Creating Account...' : 'Create Account'}
+                        </button>
+                    </form>
 
-                    <button onClick={handleSubmit} type='submit' className='save-btn'>Save</button>
+                    <div className='auth-footer'>
+                        <p>Already have an account? <Link to="/login">Login here</Link></p>
+                    </div>
                 </div>
             </div>
         </div>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//1
-// import React from 'react'
-// import './signup.css'
-// import { useState } from 'react'
-
-// import { Link } from 'react-router-dom';
-
-
-// import axios from 'axios'
-
-// export default function Signup() {
-//     const [name, setName] = useState('');
-//     const[email, setEmail] = useState('');
-//     const [password, setPassword] = useState('');
-//     const [error, setError ] = useState('')
-//     const [submit, setSubmit] = useState('')
-
-//     function handleName (e) {
-//         setName(e.target.value)
-//     }
-
-//     function handleEmail(e){
-//         setEmail(e.target.value)
-//     }
-//      const validateEmail = (email) => {
-//         if (email===''){
-//             return "email is required"
-//         }
-//         else{
-
-//           const Valid =  String(email)
-//             .toLowerCase()
-//             .match(
-//               /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-//             );
-//             return Valid ? '' : "email is inValid"
-//         }
-       
-//       };
-
-//     function handlePassword(e){
-//         setPassword(e.target.value)
-//     }
-//     const validatePassword=( password) =>{
-
-//         if (password.length <8){
-//             return 'password should be atleast 8 charcters long';
-
-//         } 
-//         else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-//             return 'Password should contain at least one special character';
-//         } else {
-//             return '';
-//         }
-//     } 
-
-
-// function handleSubmit (e){
-//     e.preventDefault();
-//     const emailError = validateEmail(email);
-//     const passwordError = validatePassword(password)
-//     if (name === '' || email === '' || password === '') {
-//         setError('All fields are required');
-//     } else if (emailError) {
-//         setError(emailError);
-//     } else if (passwordError) {
-//         setError(passwordError);
-//     } else {
-//         setError('');
-
-//         axios.post('http://localhost:3001/api/signup', { name, email, password })
-//         .then(response => {
-//             if (response.data.success) {
-//                 setSubmit(true);
-//             } else {
-//                 setError(response.data.message);
-//             }
-//         })
-//         .catch(error => {
-//             console.error('There was an error!', error);
-//             setError('Error occurred during signup');
-//         });
-        
-
-//         setSubmit(true);
-//     }
-
-// }
-
-//   return (
-
-
-
-//     <div className='main' >
-//         <div className='form-container'>  
-//       {error && <div style={{ color: 'red' }}>{error}</div>}
-//       {submit && <div style={{ color: 'green' }}>Signup successful!</div>}
-    
-//     <input type='text'  placeholder='Name' 
-//      onChange={handleName} value={name}
-    
-//     ></input>
-
-//     <input
-//     type='text' placeholder='Email'
-//     value={email} onChange={handleEmail}
-    
-//     >
-//     </input>
-
-//     <input
-//     type='text' placeholder='password'
-//     value={password} onChange={handlePassword}
-//     >
-//     </input>
-      
-// <button  onClick={handleSubmit}  type='submit'>
-//     Signup</button>
-//     <p>Already have an account? <Link to="/login">Login here</Link></p>
-//     </div>
-//     </div>
-
-
-//   )
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//2
-
-// import React, { useState } from 'react';
-// import './signup.css';
-// import { Link } from 'react-router-dom';
-// import axios from 'axios';
-
-
-// export default function Signup() {
-
-
-
-//     console.log("Signup component rendered"); 
-//     const [name, setName] = useState('');
-//     const [email, setEmail] = useState('');
-//     const [password, setPassword] = useState('');
-//     const [error, setError] = useState('');
-//     const [submit, setSubmit] = useState('');
-
-//     const handleName = (e) => {
-//         setName(e.target.value);
-//     };
-
-//     const handleEmail = (e) => {
-//         setEmail(e.target.value);
-//     };
-
-//     const validateEmail = (email) => {
-//         if (email === '') {
-//             return 'Email is required';
-//         } else {
-//             const valid = String(email)
-//                 .toLowerCase()
-//                 .match(
-//                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-//                 );
-//             return valid ? '' : 'Email is invalid';
-//         }
-//     };
-
-//     const handlePassword = (e) => {
-//         setPassword(e.target.value);
-//     };
-
-//     const validatePassword = (password) => {
-//         if (password.length < 8) {
-//             return 'Password should be at least 8 characters long';
-//         } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-//             return 'Password should contain at least one special character';
-//         } else {
-//             return '';
-//         }
-//     };
-
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         const emailError = validateEmail(email);
-//         const passwordError = validatePassword(password);
-
-//         if (name === '' || email === '' || password === '') {
-//             setError('All fields are required');
-//         } else if (emailError) {
-//             setError(emailError);
-//         } else if (passwordError) {
-//             setError(passwordError);
-//         } else {
-//             setError('');
-
-//             axios.post('http://localhost:3001/api/auth/signup', { name, email, password })
-//                 .then(response => {
-//                     if (response.data.success) {
-//                         setSubmit(true);
-//                     } else {
-//                         setError(response.data.message);
-//                     }
-//                 })
-//                 .catch(error => {
-//                     console.error('There was an error!', error);
-//                     setError('Error occurred during signup');
-//                 });
-//         }
-//     };
-
-//     return (      
-        
-        
-//         <div className='main'>
-//             <div className='form-container'>
-//                 {error && <div style={{ color: 'red' }}>{error}</div>}
-//                 {submit && <div style={{ color: 'green' }}>Signup successful!</div>}
-
-//                 <input type='text' placeholder='Name' onChange={handleName} value={name} />
-//                 <input type='text' placeholder='Email' value={email} onChange={handleEmail} />
-//                 <input type='text' placeholder='Password' value={password} onChange={handlePassword} />
-
-//                 <button onClick={handleSubmit} type='submit'>
-//                     Signup
-//                 </button>
-//                 <p>Already have an account? <Link to="/login">Login here</Link></p>
-//                 <p>productspage <Link to="/products">Login here</Link></p>
-                
-//             </div>
-//         </div>
-//     );
-// }
 

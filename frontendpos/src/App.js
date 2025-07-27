@@ -15,6 +15,9 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import OrderBill from "./components/Layout/bill.js";
 import EditOrderForm from './components/Layout/editOrder.js';
 import ProtectedRoute from './components/ProtectedRoute.js';
+import LowStockAlerts from './components/Layout/checkStock.js';
+import TrendingProducts from './components/Layout/trendingProducts.js';
+import PowerBI from './components/Layout/powerBi.js';
 
 
 function App() {
@@ -35,7 +38,20 @@ function App() {
           <Route path="/order-List" element={<ProtectedRoute><OrderList/></ProtectedRoute>}/>
           <Route path="/bill" element={<ProtectedRoute><OrderBill orderId={6}/></ProtectedRoute>}/>
           <Route path="/edit-order/:id" element={<ProtectedRoute><EditOrderForm/></ProtectedRoute>}/>
-          {/* <Route path="/inactive-users" element={<Inactive_User/>} /> */}
+          <Route path="/low-stock" element={<ProtectedRoute><LowStockAlerts/></ProtectedRoute>}/>
+
+
+          <Route path="/powerBi" element={<ProtectedRoute><PowerBI/></ProtectedRoute>}/>
+          
+          <Route path="/trends" element={<ProtectedRoute><TrendingProducts/></ProtectedRoute>}/>
+
+
+
+
+
+
+
+          
         </Routes>
       </BrowserRouter>
     </div>

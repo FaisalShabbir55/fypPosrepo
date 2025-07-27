@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './signup.css'; // Reuse signup styles
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import emailjs from '@emailjs/browser';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -9,6 +10,11 @@ export default function Login() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+
+    // EmailJS configuration
+    const EMAILJS_SERVICE_ID = 'service_u96y7bx';
+    const EMAILJS_TEMPLATE_ID = 'template_z8w7ubc';
+    const EMAILJS_PUBLIC_KEY = 'sNp_8ujlFAPgxFptv';
 
     const handleEmail = (e) => setEmail(e.target.value);
     const handlePassword = (e) => setPassword(e.target.value);
@@ -21,6 +27,36 @@ export default function Login() {
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             );
         return valid ? '' : 'Email is invalid';
+    };
+
+    // Function to send login notification email
+    const sendLoginNotification = async (userEmail, userName) => {
+        try {
+            const templateParams = {
+                to_email: userEmail,
+                to_name: userName || 'User',
+                from_name: 'POS System',
+                message: 'You have successfully logged into your POS account.',
+                login_time: new Date().toLocaleString(),
+                login_location: 'Web Application',
+                device_info: navigator.userAgent.split(')')[0] + ')',
+                ip_address: 'Your current location', // You can get actual IP if needed
+                subject: 'Login Notification - POS System'
+            };
+
+            const result = await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                templateParams,
+                EMAILJS_PUBLIC_KEY
+            );
+
+            console.log('Login notification email sent successfully:', result);
+            return true;
+        } catch (error) {
+            console.error('Failed to send login notification email:', error);
+            return false;
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -49,10 +85,23 @@ export default function Login() {
                     localStorage.setItem('token', response.data.token);
                     localStorage.setItem('user', JSON.stringify(response.data.user));
                     
-                    // Redirect to dashboard or products page
+                    // Send login notification email
+                    const emailSent = await sendLoginNotification(
+                        email, 
+                        response.data.user.name || response.data.user.email
+                    );
+                    
+                    // Show success message
+                    if (emailSent) {
+                        alert(`🎉 Login successful!\n\n📧 A login notification has been sent to your email: ${email}\n\nRedirecting to dashboard...`);
+                    } else {
+                        alert(`🎉 Login successful!\n\n⚠️ Note: Email notification could not be sent, but login was successful.\n\nRedirecting to dashboard...`);
+                    }
+                    
+                    // Redirect to dashboard or main page
                     navigate('/products');
                 } else {
-                    setError(response.data.message);
+                    setError(response.data.message || 'Login failed');
                 }
             } catch (err) {
                 console.error('Login error:', err);

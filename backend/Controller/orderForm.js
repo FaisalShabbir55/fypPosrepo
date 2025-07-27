@@ -76,13 +76,24 @@ export const createOrder = async (req, res) => {
       itemRequest.input('Price', sql.Decimal(10, 2), item.price);
       itemRequest.input('Quantity', sql.Int, item.quantity);
       itemRequest.input('Total', sql.Decimal(10, 2), item.total);
-
+      
       await itemRequest.query(`
         INSERT INTO OrderItems (
           OrderId, ProductName, Stock, Price, Quantity, Total
         ) VALUES (
           @OrderId, @ProductName, @Stock, @Price, @Quantity, @Total
         )
+      `);
+
+      // NEW: Update product stock after adding to order
+      const stockUpdateRequest = new sql.Request(transaction);
+      stockUpdateRequest.input('ProductName', sql.NVarChar(100), item.productName);
+      stockUpdateRequest.input('Quantity', sql.Int, item.quantity);
+      
+      await stockUpdateRequest.query(`
+        UPDATE Products 
+        SET Stock = Stock - @Quantity 
+        WHERE ProductName = @ProductName AND Stock >= @Quantity
       `);
     }
 

@@ -1,6 +1,7 @@
+// Products.js
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import './CSS/products.css'
+import './CSS/products.css';
 import Sidebar from './sidebar';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
@@ -36,7 +37,6 @@ const Products = () => {
     fetchProducts();
   }, []);
 
-  // Search functionality
   useEffect(() => {
     if (!searchTerm.trim()) {
       setFilteredProducts(products);
@@ -100,9 +100,7 @@ const Products = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Export Functions
   const copyToClipboard = () => {
-    // Create headers based on visible columns
     const allHeaders = ['No.', 'Product Name', 'Category', 'Price', 'Stock', 'Supplier', 'Supplier#', 'Product Brand', 'Description'];
     const columnKeys = ['no', 'productName', 'category', 'price', 'stock', 'supplier', 'supplierNumber', 'productBrand', 'description'];
     
@@ -133,7 +131,6 @@ const Products = () => {
   };
 
   const exportToCSV = () => {
-    // Create headers based on visible columns
     const allHeaders = ['No.', 'Product Name', 'Category', 'Price', 'Stock', 'Supplier', 'Supplier#', 'Product Brand', 'Description'];
     const columnKeys = ['no', 'productName', 'category', 'price', 'stock', 'supplier', 'supplierNumber', 'productBrand', 'description'];
     
@@ -168,7 +165,6 @@ const Products = () => {
   };
 
   const exportToExcel = () => {
-    // Create headers based on visible columns
     const allHeaders = ['No.', 'Product Name', 'Category', 'Price', 'Stock', 'Supplier', 'Supplier#', 'Product Brand', 'Description'];
     const columnKeys = ['no', 'productName', 'category', 'price', 'stock', 'supplier', 'supplierNumber', 'productBrand', 'description'];
     
@@ -196,12 +192,11 @@ const Products = () => {
   };
 
   const exportToPDF = () => {
-    const doc = new jsPDF('l', 'mm', 'a4'); // landscape orientation
+    const doc = new jsPDF('l', 'mm', 'a4');
     
     doc.setFontSize(18);
     doc.text('Products List', 14, 22);
     
-    // Create headers based on visible columns
     const allHeaders = ['No.', 'Product Name', 'Category', 'Price', 'Stock', 'Supplier', 'Supplier#', 'Product Brand', 'Description'];
     const columnKeys = ['no', 'productName', 'category', 'price', 'stock', 'supplier', 'supplierNumber', 'productBrand', 'description'];
     
@@ -240,7 +235,6 @@ const Products = () => {
   const printTable = () => {
     const printWindow = window.open('', '_blank');
     
-    // Create headers based on visible columns
     const allHeaders = ['No.', 'Product Name', 'Category', 'Price', 'Stock', 'Supplier', 'Supplier#', 'Product Brand', 'Description'];
     const columnKeys = ['no', 'productName', 'category', 'price', 'stock', 'supplier', 'supplierNumber', 'productBrand', 'description'];
     
